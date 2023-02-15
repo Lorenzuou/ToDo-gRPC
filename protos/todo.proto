@@ -1,0 +1,24 @@
+syntax = "proto3"; 
+
+package todoPackage;
+
+
+service Todo{
+
+    rpc createTodo (TodoItem) returns (TodoItem); 
+    rpc getTodo (TodoItem) returns (TodoItem);
+    rpc updateTodo (TodoItem) returns (TodoItem);
+    rpc deleteTodo (TodoItem) returns (TodoItem);
+    rpc listTodo (TodoItem) returns (stream TodoItem); 
+}
+
+
+
+message TodoItem {
+    string id = 1;
+    string title = 2;
+    string description = 3;
+    bool done = 4;
+}
+
+

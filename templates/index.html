@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/@improbable-eng/grpc-web@0.8.0/dist/grpc-web.min.js"></script>
+    <script>
+      function createTodo() {
+        // Get the to-do item information from the form
+        var todo = new todo_pb.TodoItem();
+        todo.setTitle(document.getElementById("title").value);
+        todo.setDescription(document.getElementById("description").value);
+        todo.setDone(false);
+
+        // Create a client for the TodoService
+        var client = new todo_pb_service.TodoServiceClient('http://localhost:50051');
+
+        // Call the createTodo method on the client
+        client.createTodo(todo, {}, function(err, response) {
+          if (err) {
+            console.error(err);
+            return;
+          }
+
+          // Update the to-do list with the new to-do item
+          var todoList = document.getElementById("todo-list");
+          var todoItem = document.createElement("li");
+          todoItem.innerHTML = response.getTitle();
+          todoList.appendChild(todoItem);
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Todo List</h1>
+    <form>
+      <label for="title">Title:</label>
+      <input type="text" id="title" name="title">
+      <br>
+      <label for="description">Description:</label>
+      <input type="text" id="description" name="description">
+      <br>
+      <button type="button" onclick="createTodo()">Add Todo</button>
+    </form>
+    <ul id="todo-list">
+    </ul>
+  </body>
+</html>
